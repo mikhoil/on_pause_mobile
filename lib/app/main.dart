@@ -1,10 +1,12 @@
 import 'package:fl_query/fl_query.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:onpause/app/layouts/main_layout.dart';
+import 'package:get_storage/get_storage.dart';
+import './layouts/main_layout.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await GetStorage.init();
   await QueryClient.initialize(cachePrefix: "onpause");
   runApp(const MyApp());
 }

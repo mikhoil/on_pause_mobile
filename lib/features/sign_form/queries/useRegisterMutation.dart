@@ -1,9 +1,8 @@
-import 'dart:async';
-
 import 'package:fl_query/fl_query.dart';
 import 'package:fl_query_hooks/fl_query_hooks.dart';
-import 'package:onpause/features/sign_form/api/login.dart';
-import 'package:onpause/features/sign_form/api/register.dart';
+
+import '../api/login.dart';
+import '../api/register.dart';
 
 Mutation<AuthResponse, Error, RegisterRequest> useRegisterMutation(
     void Function(AuthResponse, dynamic)? onData) {

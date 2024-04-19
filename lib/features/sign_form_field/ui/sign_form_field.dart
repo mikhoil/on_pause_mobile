@@ -6,20 +6,14 @@ class SignTextField extends StatelessWidget {
       {super.key,
       required this.name,
       required this.label,
-      // required this.controller,
       this.obscureText = false});
 
   final String name, label;
   final bool obscureText;
-  // final FormControl controller;
 
   @override
   Widget build(BuildContext context) {
     return ReactiveTextField(
-        // formControl: ReactiveForm.of(context)?.findControl(name) as FormControl,
-        onChanged: (context) {
-          print(context.value);
-        },
         key: Key(name),
         obscureText: obscureText,
         formControlName: name,

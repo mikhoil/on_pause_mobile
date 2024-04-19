@@ -1,18 +1,20 @@
+import 'package:fl_query/fl_query.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:onpause/screens/player_screen.dart';
-import 'package:onpause/screens/practices_screen.dart';
+import '../../../shared/utils/getToken.dart';
+import '../queries/use_user.dart';
+import '../../practices_screen/ui/practices_screen.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends HookWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => HomeScreenState();
-}
-
-class HomeScreenState extends State<HomeScreen> {
-  @override
   Widget build(BuildContext context) {
+    final snapshot = useFuture(getToken(), initialData: null);
+
+    final Query(data: user) = useUser(snapshot.data ?? "");
+
     return Scaffold(
         extendBody: true,
         extendBodyBehindAppBar: true,
@@ -38,7 +40,9 @@ class HomeScreenState extends State<HomeScreen> {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(14),
                                 color: const Color.fromRGBO(52, 49, 47, 0.7)),
-                            child: const Text("ДОБРОЕ УТРО, МИХАИЛ",
+                            child: Text(
+                                "ДОБРОЕ УТРО, ${user != null ? user.username : ''}"
+                                    .toUpperCase(),
                                 style: TextStyle(
                                   fontSize: 19,
                                   color: Colors.white,
@@ -78,10 +82,10 @@ class HomeScreenState extends State<HomeScreen> {
                                                     Color.fromRGBO(
                                                         0, 0, 0, 0.01))),
                                         onPressed: () {
-                                          Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const PlayerScreen()));
+                                          // Navigator.of(context).push(
+                                          //     MaterialPageRoute(
+                                          //         builder: (context) =>
+                                          //             const PlayerScreen()));
                                         },
                                         child: SvgPicture.asset(
                                             'lib/app/assets/play.svg'),
@@ -114,7 +118,7 @@ class HomeScreenState extends State<HomeScreen> {
                                                       color: Colors.black
                                                           .withOpacity(0.15))))),
                                       child: const Text(
-                                        "Дыхательная практика 5 мин",
+                                        "Выбрать медитацию",
                                         style: TextStyle(
                                             fontSize: 15,
                                             color: Colors.black,

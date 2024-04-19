@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_solidart/flutter_solidart.dart';
+import '../../../entities/practice/model/practice.dart';
 
 class PracticesList extends HookWidget {
-  const PracticesList({super.key});
+  const PracticesList({super.key, required this.practices});
+
+  final List<Practice> practices;
 
   @override
   Widget build(BuildContext context) {
+    final practiceIdx = context.get<Signal<int>>(0);
+    final meditationIdx = context.get<Signal<int>>(1);
+
     final pageController = usePageController();
-    final tabController = useTabController(initialLength: 2);
+
+    final tabController = useTabController(initialLength: practices.length);
 
     return Stack(alignment: Alignment.bottomCenter, children: [
       PageView(
@@ -17,53 +25,34 @@ class PracticesList extends HookWidget {
                 duration: const Duration(microseconds: 500),
                 curve: Curves.easeInOut);
             tabController.index = index;
+            practiceIdx.set(index);
+            meditationIdx.set(0);
           },
-          children: [
-            Container(
-                padding: const EdgeInsets.only(top: 83),
-                alignment: Alignment.topCenter,
-                decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage(
-                            "lib/app/assets/meditation_bg_image.png"),
-                        fit: BoxFit.fill,
-                        alignment: Alignment.topCenter)),
-                child: const Column(children: [
-                  Text("ДЫХАТЕЛЬНАЯ ПРАКТИКА",
-                      style: TextStyle(
-                          fontSize: 19,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white)),
-                  SizedBox(height: 20),
-                  Text("Прогулка по лесу",
-                      style: TextStyle(
-                          fontSize: 19,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white)),
-                ])),
-            Container(
-                padding: const EdgeInsets.only(top: 83),
-                alignment: Alignment.topCenter,
-                decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage(
-                            "lib/app/assets/meditation_bg_image.png"),
-                        fit: BoxFit.fill,
-                        alignment: Alignment.topCenter)),
-                child: const Column(children: [
-                  Text("ДЫХАТЕЛЬНАЯ ПРАКТИКА",
-                      style: TextStyle(
-                          fontSize: 19,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white)),
-                  SizedBox(height: 20),
-                  Text("Прогулка по лесу",
-                      style: TextStyle(
-                          fontSize: 19,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white)),
-                ])),
-          ]),
+          children: List<Widget>.from(practices.map((practice) => Container(
+              padding: const EdgeInsets.only(top: 83),
+              alignment: Alignment.topCenter,
+              decoration: const BoxDecoration(
+                  image: DecorationImage(
+                      image:
+                          AssetImage("lib/app/assets/meditation_bg_image.png"),
+                      fit: BoxFit.fill,
+                      alignment: Alignment.topCenter)),
+              child: Column(children: [
+                Text(practice.title,
+                    style: const TextStyle(
+                        fontSize: 19,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white)),
+                SizedBox(height: 20),
+                Text(
+                    practices[practiceIdx.value]
+                        .meditations[meditationIdx.value]
+                        .title,
+                    style: TextStyle(
+                        fontSize: 19,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white)),
+              ]))))),
       Positioned(
           bottom: 200,
           child: TabPageSelector(

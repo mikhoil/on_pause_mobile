@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:onpause/shared/utils/formatDuration.dart';
 
 class MeditationItem extends HookWidget {
   const MeditationItem(
@@ -26,7 +27,7 @@ class MeditationItem extends HookWidget {
             padding: const MaterialStatePropertyAll(
                 EdgeInsets.symmetric(vertical: 15, horizontal: 13))),
         child: Column(children: [
-          Text(duration.toString(),
+          Text(formatDuration(duration),
               style: const TextStyle(
                   color: Colors.black,
                   overflow: TextOverflow.ellipsis,

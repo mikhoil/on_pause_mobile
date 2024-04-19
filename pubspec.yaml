@@ -41,9 +41,15 @@ dependencies:
   flutter_svg: ^2.0.10+1
   reactive_forms: ^17.0.0
   flutter_svg_provider: ^1.0.7
-  localstorage: ^4.0.1+4
   shared_preferences: ^2.2.2
   dio: ^5.4.2+1
+  solidart: ^1.5.4
+  flutter_solidart: ^1.7.0
+  just_audio: ^0.9.37
+  flutter_use_audio: ^0.0.4
+  just_audio_windows: ^0.2.0
+  rxdart: ^0.27.7
+  get_storage: ^2.1.1
 
 dev_dependencies:
   flutter_test:

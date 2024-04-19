@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:onpause/screens/home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../screens/home_screen/ui/home_screen.dart';
 import '../../screens/login_screen.dart';
 
 class MainLayout extends HookWidget {
@@ -30,7 +30,6 @@ class MainLayout extends HookWidget {
 
     useEffect(() {
       hasToken();
-      // if (selectedIndex == 2)
       return null;
     }, [selectedIndex.value]);
 

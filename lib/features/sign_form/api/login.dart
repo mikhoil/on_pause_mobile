@@ -1,4 +1,4 @@
-import 'package:onpause/shared/api/auth_instance.dart';
+import '../../../shared/api/auth_instance.dart';
 
 class AuthResponse {
   AuthResponse({required this.token});

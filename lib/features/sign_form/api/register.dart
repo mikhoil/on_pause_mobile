@@ -1,5 +1,5 @@
-import 'package:onpause/features/sign_form/api/login.dart';
-import 'package:onpause/shared/api/auth_instance.dart';
+import './login.dart';
+import '../../../shared/api/auth_instance.dart';
 
 class RegisterRequest {
   RegisterRequest(
