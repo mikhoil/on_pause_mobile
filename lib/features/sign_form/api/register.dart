@@ -1,29 +1,6 @@
-import './login.dart';
-import '../../../shared/api/auth_instance.dart';
-
-class RegisterRequest {
-  RegisterRequest(
-      {required this.email, required this.username, required this.password});
-
-  String email, username, password;
-
-  factory RegisterRequest.fromJson(Map<String, dynamic> json) {
-    if (json
-        case {
-          "email": String email,
-          "password": String password,
-          "username": String username
-        }) {
-      return RegisterRequest(
-          email: email, password: password, username: username);
-    }
-    throw const FormatException("invalid json");
-  }
-
-  Map<String, dynamic> toJson() {
-    return {"email": email, "username": username, "hashed_password": password};
-  }
-}
+import '../../../shared/api/models/auth_response.dart';
+import '../../../shared/api/instances/auth_instance.dart';
+import '../../../shared/api/models/register_request.dart';
 
 Future<AuthResponse> register(RegisterRequest body) async {
   return AuthResponse.fromJson(

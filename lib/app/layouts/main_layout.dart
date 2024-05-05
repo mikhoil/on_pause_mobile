@@ -1,7 +1,13 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:onpause/features/sign_form/api/login.dart';
+import 'package:onpause/shared/utils/refreshTokens.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../shared/utils/clearPrefs.dart';
+import '../../shared/utils/getTokens.dart';
 
 import '../../screens/home_screen/ui/home_screen.dart';
 import '../../screens/login_screen.dart';
@@ -18,18 +24,25 @@ class MainLayout extends HookWidget {
       Text('c'),
     ];
 
-    final Future<SharedPreferences> prefs = SharedPreferences.getInstance();
-
-    Future<void> hasToken() async {
-      if (selectedIndex.value == 2) (await prefs).remove("token");
-      if (!(await prefs).containsKey("token")) {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => const LoginScreen()));
-      }
-    }
+    final prefs = SharedPreferences.getInstance();
 
     useEffect(() {
-      hasToken();
+      prefs.then((value) {
+        if (selectedIndex.value == 2) {
+          withRefreshTokens(() => Dio(BaseOptions(
+                  baseUrl: 'http://10.0.2.2:3000',
+                  headers: {
+                    "Authorization": "Bearer ${value.getString('accessToken')}"
+                  })).get('/auth/logout'));
+          clearPrefs();
+        }
+        prefs.then((value) {
+          if (!value.containsKey('accessToken')) {
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const LoginScreen()));
+          }
+        });
+      });
       return null;
     }, [selectedIndex.value]);
 

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
 import '../../../shared/ui/close.dart';
-import '../../../shared/utils/getToken.dart';
+import '../../../shared/utils/getTokens.dart';
 import '../../../widgets/choose_meditation/ui/choose_meditation.dart';
 import '../../../widgets/practices_list/ui/practices_list.dart';
 import '../queries/use_practices.dart';
@@ -13,9 +13,9 @@ class PracticesScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final snapshot = useFuture(getToken(), initialData: null);
+    final tokens = useFuture(getTokens(), initialData: null);
 
-    final Query(data: practices) = usePractices(snapshot.data ?? "");
+    final Query(data: practices) = usePractices(tokens.data?.accessToken ?? "");
 
     return Scaffold(
         appBar: PreferredSize(

@@ -2,7 +2,7 @@ import 'package:fl_query/fl_query.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../../shared/utils/getToken.dart';
+import '../../../shared/utils/getTokens.dart';
 import '../queries/use_user.dart';
 import '../../practices_screen/ui/practices_screen.dart';
 
@@ -11,9 +11,10 @@ class HomeScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final snapshot = useFuture(getToken(), initialData: null);
+    final result = useMemoized(getTokens);
+    final tokens = useFuture(result, initialData: null);
 
-    final Query(data: user) = useUser(snapshot.data ?? "");
+    final Query(data: user) = useUser(tokens.data?.accessToken ?? "");
 
     return Scaffold(
         extendBody: true,
@@ -81,12 +82,7 @@ class HomeScreen extends HookWidget {
                                                 MaterialStatePropertyAll(
                                                     Color.fromRGBO(
                                                         0, 0, 0, 0.01))),
-                                        onPressed: () {
-                                          // Navigator.of(context).push(
-                                          //     MaterialPageRoute(
-                                          //         builder: (context) =>
-                                          //             const PlayerScreen()));
-                                        },
+                                        onPressed: () {},
                                         child: SvgPicture.asset(
                                             'lib/app/assets/play.svg'),
                                       ),

@@ -1,7 +1,8 @@
 import 'package:fl_query/fl_query.dart';
 import 'package:fl_query_hooks/fl_query_hooks.dart';
 
-import '../api/login.dart';
+import '../../../shared/api/models/auth_response.dart';
+import '../../../shared/api/models/register_request.dart';
 import '../api/register.dart';
 
 Mutation<AuthResponse, Error, RegisterRequest> useRegisterMutation(

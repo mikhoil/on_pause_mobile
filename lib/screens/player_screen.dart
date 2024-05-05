@@ -24,8 +24,9 @@ class PlayerScreen extends HookWidget {
         print(e);
       });
       try {
-        print(meditation.url);
-        await player.setAudioSource(AudioSource.uri(Uri.parse(meditation.url!)));
+        print(meditation.key);
+        await player.setAudioSource(AudioSource.uri(Uri.parse(
+            'https://storage.yandexcloud.net/on-pause-meditations/${meditation.key!}.mp3')));
       } catch (e) {
         print(e);
       }
@@ -129,29 +130,26 @@ class PlayerScreen extends HookWidget {
                                       height: 64,
                                       child: const CircularProgressIndicator(),
                                     )
-                                  : (playing != null)
-                                      ? ElevatedButton(
-                                          onPressed: () {
-                                            if (playing) {
-                                              player.stop();
-                                            } else {
-                                              player.play();
-                                            }
-                                            print(player.duration);
-                                          },
-                                          style: const ButtonStyle(
-                                              fixedSize:
-                                                  MaterialStatePropertyAll(
-                                                      Size.fromRadius(41.5)),
-                                              padding: MaterialStatePropertyAll(
-                                                  EdgeInsets.zero)),
-                                          child: SvgPicture.asset(
-                                            'lib/app/assets/${!playing ? 'play' : 'pause'}.svg',
-                                            width: 26,
-                                            height: 28,
-                                          ),
-                                        )
-                                      : Text("error"),
+                                  : ElevatedButton(
+                                      onPressed: () {
+                                        if (playing) {
+                                          player.stop();
+                                        } else {
+                                          player.play();
+                                        }
+                                      },
+                                      style: const ButtonStyle(
+                                          fixedSize: MaterialStatePropertyAll(
+                                              Size.fromRadius(41.5)),
+                                          padding: MaterialStatePropertyAll(
+                                              EdgeInsets.zero)),
+                                      child: SvgPicture.asset(
+                                        'lib/app/assets/${!playing ? 'play' : 'pause'}.svg',
+                                        width: 26,
+                                        height: 28,
+                                      ),
+                                    ),
+                              // : Text("error"),
                               const SizedBox(
                                 height: 30,
                               ),

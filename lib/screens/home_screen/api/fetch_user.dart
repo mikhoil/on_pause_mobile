@@ -1,4 +1,6 @@
-import '../../../shared/api/classic_instance.dart';
+import 'package:onpause/shared/utils/getTokens.dart';
+
+import '../../../shared/api/instances/classic_instance.dart';
 
 class User {
   User(
@@ -27,6 +29,7 @@ class User {
 }
 
 Future<User> fetchUser() async {
+  final tokens = await getTokens();
   return User.fromJson(
-      (await (await getClassicInstance()).get('/auth/me')).data);
+      (await (getClassicInstance(tokens.accessToken)).get('/auth/me')).data);
 }

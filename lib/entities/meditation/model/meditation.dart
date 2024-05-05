@@ -3,12 +3,12 @@ class Meditation {
       {required this.id,
       required this.title,
       required this.duration,
-      required this.url,
+      required this.key,
       required this.practiceId});
 
   int id, duration, practiceId;
   String title;
-  String? url;
+  String? key;
 
   factory Meditation.fromJson(Map<String, dynamic> json) {
     if (json
@@ -22,7 +22,7 @@ class Meditation {
           id: id,
           title: title,
           duration: duration,
-          url: json['url'],
+          key: json['key'],
           practiceId: practiceId);
     }
     throw const FormatException("invalid json");

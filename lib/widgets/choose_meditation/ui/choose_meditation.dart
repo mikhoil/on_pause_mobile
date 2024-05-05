@@ -56,7 +56,7 @@ class ChooseMeditation extends HookWidget {
           const SizedBox(height: 15),
           Padding(
               padding: const EdgeInsets.symmetric(horizontal: 23),
-              child: (!snapshot.data! && practice.forSubs)
+              child: (snapshot.hasData && !snapshot.data! && practice.forSubs)
                   ? BBB(label: "Для подписчиков", onPressed: () {})
                   : BBB(
                       label: "Выбрать",
