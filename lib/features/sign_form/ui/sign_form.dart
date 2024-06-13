@@ -7,11 +7,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../app/layouts/main_layout.dart';
 import '../../../shared/api/models/login_request.dart';
 import '../../../shared/api/models/register_request.dart';
-import '../../../shared/utils/setTokens.dart';
-import '../queries/useLoginMutation.dart';
-import '../queries/useRegisterMutation.dart';
-import '../../../screens/login_screen.dart';
-import '../../../screens/register_screen.dart';
+import '../../../shared/utils/set_tokens.dart';
+import '../queries/use_login_mutation.dart';
+import '../queries/use_register_mutation.dart';
+import '../../../screens/login_screen/ui/login_screen.dart';
+import '../../../screens/register_screen/ui/register_screen.dart';
 import '../../../shared/ui/bbb.dart';
 import '../../oauth_button/ui/index.dart';
 import '../../other_sign_link/ui/index.dart';
@@ -41,13 +41,13 @@ class SignForm extends HookWidget {
 
     useEffect(() {
       prefs.then((value) {
+        print("access token ${value.getString('accessToken')}");
         final accessToken = value.getString('accessToken');
         if (accessToken != null && accessToken != '') {
-          Navigator.of(context).push(
+          Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (context) => const MainLayout()));
         }
       });
-
       return null;
     }, [loginMutation.data, registerMutation.data]);
 
@@ -112,6 +112,7 @@ class SignForm extends HookWidget {
                               label: signType == Sign.login
                                   ? "Войти"
                                   : "Создать аккаунт",
+                              colors: ['#F6C29D', '#48250B'],
                               onPressed: () {
                                 if (form.valid) {
                                   if (signType == Sign.login) {

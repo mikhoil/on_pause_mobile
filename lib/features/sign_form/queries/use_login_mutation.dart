@@ -5,6 +5,5 @@ import '../../../shared/api/models/login_request.dart';
 import '../api/login.dart';
 
 Mutation<AuthResponse, Error, LoginRequest> useLoginMutation(
-    void Function(AuthResponse, dynamic) onData) {
-  return useMutation("login", (variables) => login(variables), onData: onData);
-}
+        void Function(AuthResponse, dynamic) onData) =>
+    useMutation("login", (variables) => login(variables), onData: onData);

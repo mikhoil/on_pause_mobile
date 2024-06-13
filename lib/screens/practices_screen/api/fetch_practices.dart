@@ -1,5 +1,4 @@
-import 'package:onpause/shared/utils/getTokens.dart';
-
+import '../../../shared/utils/get_tokens.dart';
 import '../../../shared/api/instances/classic_instance.dart';
 import '../../../entities/practice/model/practice.dart';
 

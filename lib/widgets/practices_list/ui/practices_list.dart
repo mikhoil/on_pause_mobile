@@ -28,33 +28,47 @@ class PracticesList extends HookWidget {
             practiceIdx.set(index);
             meditationIdx.set(0);
           },
-          children: List<Widget>.from(practices.map((practice) => Container(
-              padding: const EdgeInsets.only(top: 83),
-              alignment: Alignment.topCenter,
-              decoration: const BoxDecoration(
-                  image: DecorationImage(
-                      image:
-                          AssetImage("lib/app/assets/meditation_bg_image.png"),
-                      fit: BoxFit.fill,
-                      alignment: Alignment.topCenter)),
-              child: Column(children: [
-                Text(practice.title,
-                    style: const TextStyle(
-                        fontSize: 19,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white)),
-                SizedBox(height: 20),
-                Text(
-                    practices[practiceIdx.value]
-                        .meditations[meditationIdx.value]
-                        .title,
-                    style: TextStyle(
-                        fontSize: 19,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white)),
-              ]))))),
+          children: List<Widget>.from(practices.map((practice) {
+            print(practice.meditations.length);
+            return Container(
+                padding: const EdgeInsets.only(top: 83),
+                alignment: Alignment.bottomCenter,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: NetworkImage(
+                            'https://storage.yandexcloud.net/on-pause-meditations/${practice.meditations[meditationIdx.value < practice.meditations.length ? meditationIdx.value : 0].image}'),
+                        fit: BoxFit.contain,
+                        alignment: Alignment.topCenter)),
+                child: Column(children: [
+                  Text(practice.title.toUpperCase(),
+                      style: TextStyle(
+                          fontSize: 19,
+                          fontWeight: FontWeight.w500,
+                          color: Color(int.parse(
+                              practice.colors[0].replaceAll('#', 'FF'),
+                              radix: 16)))),
+                  SizedBox(height: 7),
+                  Container(
+                      decoration: BoxDecoration(
+                          color: Color(int.parse(
+                              practice.colors[1].replaceAll('#', 'FF'),
+                              radix: 16)),
+                          borderRadius: BorderRadius.circular(21)),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                      child: Text(
+                          practices[practiceIdx.value]
+                              .meditations[meditationIdx.value]
+                              .title,
+                          style: TextStyle(
+                              fontSize: 15,
+                              color: Color(int.parse(
+                                  radix: 16,
+                                  practice.colors[2].replaceAll('#', 'FF')))))),
+                ]));
+          }))),
       Positioned(
-          bottom: 200,
+          bottom: 220,
           child: TabPageSelector(
             controller: tabController,
             color: const Color.fromRGBO(80, 89, 89, 0.36),

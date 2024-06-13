@@ -50,6 +50,7 @@ dependencies:
   just_audio_windows: ^0.2.0
   rxdart: ^0.27.7
   get_storage: ^2.1.1
+  flutter_requery: ^0.1.16
 
 dev_dependencies:
   flutter_test:

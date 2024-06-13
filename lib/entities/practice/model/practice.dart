@@ -1,24 +1,23 @@
-import 'package:onpause/entities/meditation/model/meditation.dart';
+import '../../../entities/meditation/model/meditation.dart';
 
 class Practice {
   Practice(
       {required this.id,
       required this.title,
-      required this.forSubs,
-      required this.meditations});
+      required this.meditations,
+      required this.colors});
 
   int id;
   String title;
-  bool forSubs;
   List<Meditation> meditations;
+  List<String> colors;
 
   factory Practice.fromJson(Map<String, dynamic> json) {
-    if (json
-        case {"id": int id, "title": String title, "forSubs": bool forSubs}) {
+    if (json case {"id": int id, "title": String title}) {
       return Practice(
           id: id,
           title: title,
-          forSubs: forSubs,
+          colors: List<String>.from(json['colors'].map((color) => color)),
           meditations: List<Meditation>.from(json['meditations'].map(
               (meditation) =>
                   Meditation.fromJson(meditation as Map<String, dynamic>))));

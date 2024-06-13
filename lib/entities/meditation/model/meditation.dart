@@ -3,12 +3,16 @@ class Meditation {
       {required this.id,
       required this.title,
       required this.duration,
-      required this.key,
-      required this.practiceId});
+      required this.audio,
+      required this.practiceId,
+      required this.forSubs,
+      required this.image});
 
   int id, duration, practiceId;
   String title;
-  String? key;
+  String? audio;
+  String image;
+  bool forSubs;
 
   factory Meditation.fromJson(Map<String, dynamic> json) {
     if (json
@@ -16,13 +20,17 @@ class Meditation {
           "id": int id,
           "title": String title,
           "duration": int duration,
-          "practiceId": int practiceId
+          "practiceId": int practiceId,
+          "forSubs": bool forSubs,
+          "image": String image
         }) {
       return Meditation(
           id: id,
           title: title,
           duration: duration,
-          key: json['key'],
+          forSubs: forSubs,
+          image: image,
+          audio: json['audio'],
           practiceId: practiceId);
     }
     throw const FormatException("invalid json");

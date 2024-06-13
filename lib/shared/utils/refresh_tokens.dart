@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import './getTokens.dart';
-import './setTokens.dart';
+import './get_tokens.dart';
+import './set_tokens.dart';
 
 import '../api/models/auth_response.dart';
 
@@ -12,11 +12,11 @@ Future<AuthResponse> refreshTokens(String refreshToken) async =>
         .data);
 
 Future<T> withRefreshTokens<T>(Function request) async {
-  final AuthResponse(refreshToken: refreshToken, expiresIn: expiresIn) =
-      await getTokens();
-  if (expiresIn > 0 &&
-      DateTime.now().millisecondsSinceEpoch >= expiresIn * 1000) {
-    await setTokens(await refreshTokens(refreshToken));
+  print('refreshing');
+  final tokens = await getTokens();
+  if (tokens.expiresIn > 0 &&
+      DateTime.now().millisecondsSinceEpoch >= tokens.expiresIn * 1000) {
+    await setTokens(await refreshTokens(tokens.refreshToken));
   }
   return request();
 }

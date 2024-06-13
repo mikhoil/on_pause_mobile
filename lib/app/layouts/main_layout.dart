@@ -1,16 +1,12 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:onpause/features/sign_form/api/login.dart';
-import 'package:onpause/shared/utils/refreshTokens.dart';
+import 'package:onpause/shared/utils/get_tokens.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../shared/utils/clearPrefs.dart';
-import '../../shared/utils/getTokens.dart';
-
+import '../../screens/affirmations_screen/ui/affirmations_screen.dart';
+import '../../screens/profile_screen/ui/profile_screen.dart';
 import '../../screens/home_screen/ui/home_screen.dart';
-import '../../screens/login_screen.dart';
+import '../../screens/login_screen/ui/login_screen.dart';
 
 class MainLayout extends HookWidget {
   const MainLayout({super.key});
@@ -18,63 +14,62 @@ class MainLayout extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final selectedIndex = useState(0);
-    const widgetOptions = <Widget>[
+    final widgetOptions = <Widget>[
       HomeScreen(),
-      Text('b'),
-      Text('c'),
+      AffirmationScreen(),
+      ProfileScreen(),
     ];
 
     final prefs = SharedPreferences.getInstance();
+    final results = useMemoized(getTokens, []);
+    final snapshot = useFuture(results, initialData: null);
 
     useEffect(() {
       prefs.then((value) {
-        if (selectedIndex.value == 2) {
-          withRefreshTokens(() => Dio(BaseOptions(
-                  baseUrl: 'http://10.0.2.2:3000',
-                  headers: {
-                    "Authorization": "Bearer ${value.getString('accessToken')}"
-                  })).get('/auth/logout'));
-          clearPrefs();
-        }
-        prefs.then((value) {
-          if (!value.containsKey('accessToken')) {
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const LoginScreen()));
-          }
-        });
+        print("accessToken ${value.getString('accessToken')}");
       });
-      return null;
-    }, [selectedIndex.value]);
+    }, []);
 
-    return Scaffold(
-        appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(0), child: AppBar()),
-        body: widgetOptions[selectedIndex.value],
-        bottomNavigationBar: SizedBox(
-          height: 96,
-          child: BottomNavigationBar(
-            showSelectedLabels: false,
-            showUnselectedLabels: false,
-            items: [
-              BottomNavigationBarItem(
-                  activeIcon:
-                      SvgPicture.asset('lib/app/assets/active_player.svg'),
-                  icon: SvgPicture.asset('lib/app/assets/player.svg'),
-                  label: ""),
-              BottomNavigationBarItem(
-                  activeIcon: SvgPicture.asset(
-                      'lib/app/assets/active_affirmations.svg'),
-                  icon: SvgPicture.asset('lib/app/assets/affirmations.svg'),
-                  label: ""),
-              BottomNavigationBarItem(
-                  activeIcon:
-                      SvgPicture.asset('lib/app/assets/active_profile.svg'),
-                  icon: SvgPicture.asset('lib/app/assets/profile.svg'),
-                  label: ""),
-            ],
-            currentIndex: selectedIndex.value,
-            onTap: (index) => selectedIndex.value = index,
-          ),
-        ));
+    return snapshot.data != null
+        ? Scaffold(
+            appBar: PreferredSize(
+                preferredSize: const Size.fromHeight(0), child: AppBar()),
+            body: snapshot.data?.accessToken != ''
+                ? widgetOptions[selectedIndex.value]
+                : const LoginScreen(),
+            bottomNavigationBar: snapshot.data?.accessToken != ''
+                ? SizedBox(
+                    height: MediaQuery.of(context).size.height / 852 * 96,
+                    child: BottomNavigationBar(
+                      backgroundColor: Color.fromRGBO(255, 247, 242, 1),
+                      showSelectedLabels: false,
+                      showUnselectedLabels: false,
+                      items: [
+                        BottomNavigationBarItem(
+                            activeIcon: SvgPicture.asset(
+                                'lib/app/assets/active_player.svg'),
+                            icon: SvgPicture.asset('lib/app/assets/player.svg'),
+                            label: ""),
+                        BottomNavigationBarItem(
+                            activeIcon: SvgPicture.asset(
+                                'lib/app/assets/active_affirmations.svg'),
+                            icon: SvgPicture.asset(
+                                'lib/app/assets/affirmations.svg'),
+                            label: ""),
+                        BottomNavigationBarItem(
+                            activeIcon: SvgPicture.asset(
+                                'lib/app/assets/active_profile.svg'),
+                            icon:
+                                SvgPicture.asset('lib/app/assets/profile.svg'),
+                            label: ""),
+                      ],
+                      currentIndex: selectedIndex.value,
+                      onTap: (index) => selectedIndex.value = index,
+                    ),
+                  )
+                : SizedBox(
+                    height: 0,
+                  ))
+        : CircularProgressIndicator();
   }
 }
